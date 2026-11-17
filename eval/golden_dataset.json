@@ -1,0 +1,50 @@
+{
+  "_comment": "Golden dataset: expected Board outcomes per deal. Used by (1) the deterministic policy regression suite (CI, no LLM) and (2) the LLM end-to-end eval (eval/run_eval.py --live).",
+  "cases": [
+    {
+      "case_id": "nimbus_astra_out_of_lane_forensics",
+      "deal_id": "DEAL-2026-001",
+      "expected": {
+        "guardrails_passed": true,
+        "blocker_rules": [],
+        "swimlane_conflict_keywords": ["MANDIANT"],
+        "final_decision_in": ["IN_WITH_CONDITIONS"],
+        "required_tools": ["fetch_deal_brief", "calculate_engagement_price", "check_deal_policy_guardrails", "classify_swimlane_ownership", "find_available_consultants", "record_dragon_verdict"]
+      }
+    },
+    {
+      "case_id": "helvetia_below_floor_and_certification_ask",
+      "deal_id": "DEAL-2026-002",
+      "expected": {
+        "guardrails_passed": false,
+        "blocker_rules": ["MIN_DEAL_VALUE"],
+        "swimlane_conflict_keywords": ["never certifies"],
+        "final_decision_in": ["OUT"],
+        "required_tools": ["fetch_deal_brief", "calculate_engagement_price", "check_deal_policy_guardrails"]
+      }
+    },
+    {
+      "case_id": "orbital_clean_ai_spr_vpcsc",
+      "deal_id": "DEAL-2026-003",
+      "expected": {
+        "guardrails_passed": true,
+        "blocker_rules": [],
+        "swimlane_conflict_keywords": [],
+        "final_decision_in": ["IN", "IN_WITH_CONDITIONS"],
+        "required_tools": ["fetch_deal_brief", "calculate_engagement_price", "classify_swimlane_ownership"]
+      }
+    },
+    {
+      "case_id": "desert_falcon_mega_deal_discount_and_pentest",
+      "deal_id": "DEAL-2026-004",
+      "expected": {
+        "guardrails_passed": false,
+        "blocker_rules": ["MAX_DISCOUNT"],
+        "swimlane_conflict_keywords": ["WIZ", "MANDIANT"],
+        "final_decision_in": ["OUT"],
+        "routes_to_pro": true,
+        "required_tools": ["fetch_deal_brief", "calculate_engagement_price", "check_deal_policy_guardrails", "classify_swimlane_ownership"]
+      }
+    }
+  ]
+}

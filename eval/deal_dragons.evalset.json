@@ -1,0 +1,39 @@
+{
+  "eval_set_id": "deal_dragons_golden",
+  "name": "Deal Dragons golden trajectories",
+  "description": "ADK AgentEvaluator set: checks tool trajectory and final response quality for representative deals.",
+  "eval_cases": [
+    {
+      "eval_id": "helvetia_below_floor",
+      "conversation": [
+        {
+          "invocation_id": "inv-helvetia-1",
+          "user_content": {"role": "user", "parts": [{"text": "Please run a board review of DEAL-2026-002."}]},
+          "final_response": {"role": "model", "parts": [{"text": "I'm out. Helvetia Pastry Bank at $95,000 is below the $160,000 practice minimum, and PSO cannot certify ISO 27001 compliance; re-scope above the floor and remove the certification ask."}]},
+          "intermediate_data": {
+            "tool_uses": [
+              {"name": "fetch_deal_brief", "args": {"deal_id": "DEAL-2026-002"}}
+            ]
+          }
+        }
+      ],
+      "session_input": {"app_name": "deal_dragons", "user_id": "eval_user", "state": {}}
+    },
+    {
+      "eval_id": "orbital_clean",
+      "conversation": [
+        {
+          "invocation_id": "inv-orbital-1",
+          "user_content": {"role": "user", "parts": [{"text": "Review DEAL-2026-003 for Orbital Grocers."}]},
+          "final_response": {"role": "model", "parts": [{"text": "The board is in on Orbital Grocers: AI Security Posture Review plus VPC-SC rollout is PSO-owned, priced within policy, and staffable with AI security consultants."}]},
+          "intermediate_data": {
+            "tool_uses": [
+              {"name": "fetch_deal_brief", "args": {"deal_id": "DEAL-2026-003"}}
+            ]
+          }
+        }
+      ],
+      "session_input": {"app_name": "deal_dragons", "user_id": "eval_user", "state": {}}
+    }
+  ]
+}

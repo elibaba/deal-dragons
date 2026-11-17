@@ -1,0 +1,21 @@
+{
+  "_comment": "Fictional blended daily rates (USD) for the demo. Not real Google pricing.",
+  "currency": "USD",
+  "working_days_per_week": 5,
+  "daily_rates": {
+    "L4": 1800,
+    "L5": 2200,
+    "L6": 2700,
+    "L7": 3300
+  },
+  "default_level_mix": {"L4": 0.2, "L5": 0.5, "L6": 0.25, "L7": 0.05},
+  "policy": {
+    "minimum_deal_value_usd": 160000,
+    "max_discount_pct_without_vp": 15,
+    "absolute_max_discount_pct": 30,
+    "min_gross_margin_pct": 25,
+    "fully_loaded_cost_ratio": 0.62,
+    "sow_technical_approval_sla_business_days": 2,
+    "pro_routing_tcv_threshold_usd": 1000000
+  }
+}

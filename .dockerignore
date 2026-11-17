@@ -1,0 +1,8 @@
+.venv
+.git
+tests
+eval
+terraform
+*.db
+__pycache__
+.env

@@ -1,0 +1,49 @@
+{
+  "_comment": "Fictional deal pipeline (mock CRM). Customers are invented companies.",
+  "deals": [
+    {
+      "deal_id": "DEAL-2026-001",
+      "customer": "Nimbus Telecom",
+      "industry": "telecommunications",
+      "region": "EMEA",
+      "requested_offerings": ["OFF-ASTRA"],
+      "proposed_price_usd": 720000,
+      "proposed_discount_pct": 10,
+      "duration_weeks": 16,
+      "notes": "Migrate legacy SIEM to Google SecOps, SOAR playbooks with agents. Customer also asked for a forensic review of a 2025 breach."
+    },
+    {
+      "deal_id": "DEAL-2026-002",
+      "customer": "Helvetia Pastry Bank",
+      "industry": "financial_services",
+      "region": "EMEA",
+      "requested_offerings": ["OFF-CSPR"],
+      "proposed_price_usd": 95000,
+      "proposed_discount_pct": 20,
+      "duration_weeks": 4,
+      "notes": "Quick posture review before regulator audit. Customer wants Google to certify ISO 27001 compliance."
+    },
+    {
+      "deal_id": "DEAL-2026-003",
+      "customer": "Orbital Grocers",
+      "industry": "retail",
+      "region": "EMEA",
+      "requested_offerings": ["OFF-AI-SPR", "OFF-VPCSC"],
+      "proposed_price_usd": 410000,
+      "proposed_discount_pct": 5,
+      "duration_weeks": 10,
+      "notes": "Vertex AI spend spike, suspected model distillation; wants AI posture review and VPC-SC rollout."
+    },
+    {
+      "deal_id": "DEAL-2026-004",
+      "customer": "Desert Falcon Energy",
+      "industry": "energy",
+      "region": "MENAT",
+      "requested_offerings": ["OFF-SCC-WIZ", "OFF-CSPR", "OFF-PENTEST"],
+      "proposed_price_usd": 1450000,
+      "proposed_discount_pct": 35,
+      "duration_weeks": 24,
+      "notes": "Large multi-tower deal; customer wants penetration testing of OT desktop apps bundled into one PSO contract."
+    }
+  ]
+}

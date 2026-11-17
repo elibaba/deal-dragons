@@ -1,0 +1,46 @@
+name: Deploy - build image, live eval, roll out to Cloud Run
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ["deal_dragons/**", "server.py", "requirements.txt", "Dockerfile"]
+
+permissions:
+  contents: read
+  id-token: write   # keyless auth via Workload Identity Federation (no JSON keys)
+
+env:
+  PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
+  REGION: ${{ vars.GCP_REGION || 'us-central1' }}
+  SERVICE: deal-dragons
+
+jobs:
+  deploy:
+    if: ${{ vars.GCP_PROJECT_ID != '' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.WIF_PROVIDER }}
+          service_account: ${{ vars.DEPLOYER_SA }}
+      - uses: google-github-actions/setup-gcloud@v2
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Live LLM evaluation gate
+        env:
+          GOOGLE_CLOUD_PROJECT: ${{ env.PROJECT_ID }}
+          GOOGLE_CLOUD_LOCATION: ${{ env.REGION }}
+          GOOGLE_GENAI_USE_VERTEXAI: "true"
+        run: |
+          pip install -e ".[dev]"
+          python eval/run_eval.py --live
+      - name: Build & push image
+        run: |
+          IMAGE="${REGION}-docker.pkg.dev/${PROJECT_ID}/${SERVICE}/${SERVICE}:${GITHUB_SHA}"
+          gcloud builds submit --tag "$IMAGE" .
+          echo "IMAGE=$IMAGE" >> "$GITHUB_ENV"
+      - name: Roll out
+        run: gcloud run services update "$SERVICE" --region "$REGION" --image "$IMAGE"

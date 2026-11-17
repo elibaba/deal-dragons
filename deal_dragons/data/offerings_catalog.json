@@ -1,0 +1,85 @@
+{
+  "_comment": "Illustrative, fictional PSO Security offering catalog used by the Deal Dragons demo. Not an official price list.",
+  "offerings": [
+    {
+      "offering_id": "OFF-CSPR",
+      "name": "Cloud Security Posture Review",
+      "category": "assessment",
+      "owning_swimlane": "PSO",
+      "typical_weeks": 6,
+      "typical_fte": 2.0,
+      "required_skills": ["gcp_security_foundations", "iam", "scc"],
+      "description": "Controls-based review of a customer's GCP security posture with prioritized remediation roadmap."
+    },
+    {
+      "offering_id": "OFF-AI-SPR",
+      "name": "AI Security Posture Review",
+      "category": "assessment",
+      "owning_swimlane": "PSO",
+      "typical_weeks": 6,
+      "typical_fte": 2.0,
+      "required_skills": ["ai_security", "model_armor", "vertex_ai"],
+      "description": "160+ control review of AI workloads aligned to SAIF, Model Armor and Agent Engine guardrails."
+    },
+    {
+      "offering_id": "OFF-ASTRA",
+      "name": "Agentic SecOps Transformation (ASTRA)",
+      "category": "transformation",
+      "owning_swimlane": "PSO",
+      "typical_weeks": 16,
+      "typical_fte": 3.5,
+      "required_skills": ["secops", "soar", "siem_migration", "adk"],
+      "description": "AI-agent accelerated SIEM/SOAR migration to Google SecOps; cuts migration timelines by 50-60%."
+    },
+    {
+      "offering_id": "OFF-VPCSC",
+      "name": "VPC Service Controls Perimeter Rollout",
+      "category": "implementation",
+      "owning_swimlane": "PSO",
+      "typical_weeks": 8,
+      "typical_fte": 2.0,
+      "required_skills": ["vpc_sc", "networking", "iam"],
+      "description": "Design and staged dry-run-to-enforced rollout of VPC-SC perimeters for data exfiltration protection."
+    },
+    {
+      "offering_id": "OFF-SCC-WIZ",
+      "name": "SCC + Wiz Operationalization Accelerator",
+      "category": "implementation",
+      "owning_swimlane": "WIZ",
+      "typical_weeks": 6,
+      "typical_fte": 1.5,
+      "required_skills": ["scc", "wiz", "cspm"],
+      "description": "Operationalize CNAPP findings across Security Command Center and Wiz with ticketing workflows."
+    },
+    {
+      "offering_id": "OFF-IR-RETAINER",
+      "name": "Incident Response Retainer",
+      "category": "incident_response",
+      "owning_swimlane": "MANDIANT",
+      "typical_weeks": 52,
+      "typical_fte": 0.5,
+      "required_skills": ["incident_response", "forensics"],
+      "description": "Mandiant breach response retainer. PSO must not sell forensic investigation services."
+    },
+    {
+      "offering_id": "OFF-PENTEST",
+      "name": "Application Penetration Testing",
+      "category": "offensive_security",
+      "owning_swimlane": "MANDIANT",
+      "typical_weeks": 4,
+      "typical_fte": 1.0,
+      "required_skills": ["pentest", "appsec"],
+      "description": "Offensive testing of applications, including non-GCP desktop code. Mandiant-owned."
+    },
+    {
+      "offering_id": "OFF-AI-FDE",
+      "name": "Forward-Deployed AI Security Engineering",
+      "category": "embedded_engineering",
+      "owning_swimlane": "SECURITY_FDE",
+      "typical_weeks": 12,
+      "typical_fte": 2.0,
+      "required_skills": ["ai_security", "adk", "agent_engine"],
+      "description": "Embedded engineers building custom AI threat-defense agents with the customer."
+    }
+  ]
+}
