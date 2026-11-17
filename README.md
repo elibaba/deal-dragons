@@ -106,7 +106,7 @@ flowchart TD
 ### 5. Infrastructure & CI/CD
 | Criterion | Evidence |
 |---|---|
-| **Automated evaluation suites** | [`eval/`](eval/): `golden_dataset.json` holds the expected verdicts. `run_eval.py` runs a deterministic regression gate on every CI build and, with `--live`, an end-to-end LLM eval plus ADK `AgentEvaluator` on `deal_dragons.evalset.json` with `test_config.json` thresholds. There are also 48 pytest unit and contract tests. |
+| **Automated evaluation suites** | [`eval/`](eval/): `golden_dataset.json` holds the expected verdicts. `run_eval.py` runs a deterministic regression gate on every CI build and, with `--live`, an end-to-end LLM eval plus ADK `AgentEvaluator` on `deal_dragons.evalset.json` with `test_config.json` thresholds. There are also 49 pytest tests, including a scripted-LLM end-to-end test of the full orchestration and the HITL pause. |
 | **Infrastructure as code** | [`terraform/`](terraform/): APIs, a least-privilege runtime service account, Secret Manager, the Agent Engine (Sessions + Memory Bank), a Model Armor template, Artifact Registry, Cloud Run v2, and keyless GitHub **Workload Identity Federation**. **agents-cli** usage is documented below and in [`agents-cli-manifest.yaml`](agents-cli-manifest.yaml). |
 | **Secure secret management** | [`deal_dragons/infrastructure/secrets.py`](deal_dragons/infrastructure/secrets.py) reads from **Secret Manager** (`SecretManagerServiceClient`). Cloud Run injects secrets with `secret_key_ref` ([`terraform/cloud_run.tf`](terraform/cloud_run.tf)), Vertex AI is reached through the service-account ADC (no API keys at all), and CI uses WIF (no JSON keys). `tests/test_secrets.py` scans the repo for hardcoded credentials. |
 
@@ -119,7 +119,7 @@ python -m venv .venv && .venv/bin/pip install -e ".[dev]"
 cp .env.example .env            # set GOOGLE_CLOUD_PROJECT; uses Vertex AI via ADC
 gcloud auth application-default login
 
-make test                       # 48 unit/contract tests + golden regression
+make test                       # 49 tests + golden regression
 make eval                       # deterministic golden-dataset gate
 make playground                 # ADK web UI with persistent SQLite sessions
 python scripts/demo_review.py DEAL-2026-003   # terminal demo incl. the HITL pause
@@ -170,7 +170,7 @@ deal_dragons/
   observability/           # JSON logging, OTel tracing, intent/outcome, PII redaction
   infrastructure/secrets.py
 eval/                      # golden dataset, ADK evalset, harness
-tests/                     # 48 tests
+tests/                     # 49 tests (incl. scripted-LLM e2e)
 terraform/                 # IaC
 ```
 

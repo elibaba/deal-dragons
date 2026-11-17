@@ -89,7 +89,7 @@ class IntentOutcomeLoggingPlugin(BasePlugin):
         cid = uuid.uuid4().hex[:12]
         self._starts[key] = (cid, time.perf_counter())
         logger.info("intent", extra={"event": "intent", "kind": "tool", "tool": tool.name, "agent": tool_context.agent_name,
-                                     "correlation_id": cid, "args": redact_obj(tool_args)})
+                                     "correlation_id": cid, "tool_args": redact_obj(tool_args)})
         _span_attrs(intent=f"call {tool.name}")
         return None
 

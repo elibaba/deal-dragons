@@ -80,7 +80,7 @@ def test_record_dragon_verdict_requires_conditions(tool_context):
     assert res["error_code"] == "MISSING_CONDITIONS"
     ok = t.record_dragon_verdict("pricing_dragon", "IN", 0.8, "Margin 38% and discount 10% within policy.", [], tool_context=tool_context)
     assert ok["status"] == "recorded"
-    assert "pricing_dragon" in tool_context.state["dragon_votes"]
+    assert t.collect_dragon_votes(tool_context.state)["pricing_dragon"]["decision"] == "IN"
 
 
 def test_technical_approval_blocked_when_board_declined(tool_context):

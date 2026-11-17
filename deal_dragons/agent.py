@@ -38,7 +38,7 @@ from deal_dragons.observability.intent_outcome import IntentOutcomeLoggingPlugin
 from deal_dragons.observability.logging_setup import configure_logging
 from deal_dragons.observability.tracing import configure_tracing
 from deal_dragons.routing import ModelTier, model_for
-from deal_dragons.tools.deal_tools import list_open_deals
+from deal_dragons.tools.deal_tools import collect_dragon_votes, list_open_deals
 
 configure_logging()
 configure_tracing()
@@ -55,11 +55,21 @@ async def require_deal_brief(callback_context: CallbackContext) -> types.Content
     return None
 
 
+async def convene_board(callback_context: CallbackContext) -> types.Content | None:
+    """before_agent_callback on the verdict loop: require a brief, then aggregate the parallel dragon votes."""
+    skip = await require_deal_brief(callback_context)
+    if skip:
+        return skip
+    callback_context.state["dragon_votes"] = collect_dragon_votes(callback_context.state)
+    callback_context.state["verdict_audit_feedback"] = ""
+    return None
+
+
 def build_root_agent() -> Agent:
     dragons_den = build_dragons_den()
     dragons_den.before_agent_callback = require_deal_brief
     verdict_loop = build_verdict_loop()
-    verdict_loop.before_agent_callback = require_deal_brief
+    verdict_loop.before_agent_callback = convene_board
 
     pipeline = SequentialAgent(
         name="deal_review_pipeline",

@@ -23,6 +23,7 @@ from opentelemetry import trace
 from deal_dragons.schemas import (
     ConsultantMatch,
     DealBrief,
+    DragonName,
     DragonVerdict,
     FetchDealBriefRequest,
     GuardrailCheckRequest,
@@ -48,6 +49,8 @@ from deal_dragons.tools import catalog
 from deal_dragons.tools.errors import DealDragonsToolError, guided_tool
 
 tracer = trace.get_tracer("deal_dragons.tools")
+
+VOTE_KEY_PREFIX = "dragon_vote__"
 
 # Keywords that indicate work outside the PSO swimlane.
 _MANDIANT_SIGNALS = re.compile(r"\b(forensic|breach investigation|pen(etration)?[ -]?test|red team|incident response retainer)\b", re.I)
@@ -401,10 +404,15 @@ def record_dragon_verdict(
             "IN_WITH_CONDITIONS requires at least one condition.",
             "Either list the concrete conditions (e.g. 'VP approval for 20% discount') or change decision to IN.",
         )
-    votes = dict(tool_context.state.get("dragon_votes", {}))
-    votes[verdict.dragon.value] = verdict.model_dump(mode="json")
-    tool_context.state["dragon_votes"] = votes
+    # One state key per dragon: the four dragons run concurrently in a ParallelAgent,
+    # so a shared read-modify-write dict would race. The Board aggregates them later.
+    tool_context.state[f"{VOTE_KEY_PREFIX}{verdict.dragon.value}"] = verdict.model_dump(mode="json")
     return {"status": "recorded", "verdict": verdict.model_dump(mode="json")}
+
+
+def collect_dragon_votes(state: Any) -> dict[str, Any]:
+    """Aggregate the per-dragon vote keys written by `record_dragon_verdict`."""
+    return {d.value: state.get(f"{VOTE_KEY_PREFIX}{d.value}") for d in DragonName if state.get(f"{VOTE_KEY_PREFIX}{d.value}")}
 
 
 # ---------------------------------------------------------------------------
