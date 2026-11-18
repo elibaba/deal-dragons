@@ -65,7 +65,7 @@ def build_session_service() -> BaseSessionService:
     if settings.use_agent_engine:
         logger.info("session_service", extra={"backend": "vertex_ai_agent_engine"})
         return VertexAiSessionService(
-            project=settings.project_id, location=settings.location, agent_engine_id=settings.agent_engine_id
+            project=settings.project_id, location=settings.region, agent_engine_id=settings.agent_engine_id
         )
     logger.info("session_service", extra={"backend": "database", "url_scheme": settings.session_db_url.split(":")[0]})
     return DatabaseSessionService(db_url=settings.session_db_url)
@@ -76,7 +76,7 @@ def build_memory_service() -> BaseMemoryService:
     inner: BaseMemoryService
     if settings.use_agent_engine:
         inner = VertexAiMemoryBankService(
-            project=settings.project_id, location=settings.location, agent_engine_id=settings.agent_engine_id
+            project=settings.project_id, location=settings.region, agent_engine_id=settings.agent_engine_id
         )
     else:
         inner = InMemoryMemoryService()
@@ -86,6 +86,6 @@ def build_memory_service() -> BaseMemoryService:
 def service_uris() -> dict[str, Any]:
     """URIs consumed by `get_fast_api_app` (adk api_server) for the same backends."""
     if settings.use_agent_engine:
-        uri = f"agentengine://projects/{settings.project_id}/locations/{settings.location}/reasoningEngines/{settings.agent_engine_id}"
+        uri = f"agentengine://projects/{settings.project_id}/locations/{settings.region}/reasoningEngines/{settings.agent_engine_id}"
         return {"session_service_uri": uri, "memory_service_uri": uri}
     return {"session_service_uri": settings.session_db_url, "memory_service_uri": None}

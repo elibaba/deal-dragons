@@ -144,6 +144,8 @@ class DealGuardrailPlugin(BasePlugin):
             return None
         modified = False
         for part in llm_response.content.parts:
+            if part.text and part.text.lstrip().startswith(("{", "[", "```")):
+                continue  # structured (output_schema) responses must stay valid JSON; prose fields are audited by the critic
             if part.text and COMPLIANCE_PROMISE.search(part.text) and DISCLAIMER not in part.text:
                 part.text = part.text + DISCLAIMER
                 modified = True

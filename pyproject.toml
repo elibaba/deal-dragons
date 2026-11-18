@@ -6,7 +6,7 @@ readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "Apache-2.0" }
 dependencies = [
-  "google-adk[db]==2.14.1",
+  "google-adk[db,gcp]==2.14.1",
   "google-cloud-secret-manager>=2.20",
   "google-cloud-dlp>=3.20",
   "google-cloud-modelarmor>=0.2",

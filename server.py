@@ -26,7 +26,6 @@ app = get_fast_api_app(
     allow_origins=[o for o in os.environ.get("ALLOW_ORIGINS", "").split(",") if o],
     host="0.0.0.0",
     port=int(os.environ.get("PORT", "8080")),
-    logo_text="Deal Dragons",
 )
 
 

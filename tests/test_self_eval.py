@@ -21,6 +21,12 @@ def test_inconsistent_verdict_flagged():
     assert any("voted OUT" in i for i in issues)
 
 
+def test_misreported_vote_flagged():
+    recorded = {"pricing_dragon": {"decision": "OUT"}}
+    issues = audit_board_verdict_rules(GOOD, recorded)
+    assert any("pricing_dragon actually voted OUT" in i for i in issues)
+
+
 def test_audit_tool_writes_state(tool_context):
     tool_context.state["board_verdict"] = GOOD
     res = audit_board_verdict(tool_context=tool_context)

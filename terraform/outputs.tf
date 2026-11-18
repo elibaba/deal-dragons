@@ -15,7 +15,7 @@ output "artifact_registry" {
 }
 
 output "workload_identity_provider" {
-  value = google_iam_workload_identity_pool_provider.github.name
+  value = var.enable_github_wif ? google_iam_workload_identity_pool_provider.github[0].name : ""
 }
 
 output "deployer_service_account" {

@@ -24,7 +24,10 @@ class Settings:
 
     # --- Google Cloud ------------------------------------------------------
     project_id: str = field(default_factory=lambda: os.environ.get("GOOGLE_CLOUD_PROJECT", ""))
-    location: str = field(default_factory=lambda: os.environ.get("GOOGLE_CLOUD_LOCATION", "us-central1"))
+    # Gemini 3.x models are served from the Vertex AI *global* endpoint.
+    location: str = field(default_factory=lambda: os.environ.get("GOOGLE_CLOUD_LOCATION", "global"))
+    # Regional services (Agent Engine Sessions/Memory Bank, Model Armor) live in a concrete region.
+    region: str = field(default_factory=lambda: os.environ.get("GOOGLE_CLOUD_REGION", "us-central1"))
     agent_engine_id: str = field(default_factory=lambda: os.environ.get("AGENT_ENGINE_ID", ""))
 
     # --- Strategic model routing -----------------------------------------

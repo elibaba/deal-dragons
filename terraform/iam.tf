@@ -12,8 +12,8 @@ locals {
     "roles/cloudtrace.agent",             # OpenTelemetry spans -> Cloud Trace
     "roles/logging.logWriter",            # structured JSON logs
     "roles/monitoring.metricWriter",
-    "roles/dlp.user",                     # PII redaction via Sensitive Data Protection
-    "roles/modelarmor.user",              # prompt/response screening
+    "roles/dlp.user",        # PII redaction via Sensitive Data Protection
+    "roles/modelarmor.user", # prompt/response screening
     "roles/telemetry.tracesWriter",
   ]
 }

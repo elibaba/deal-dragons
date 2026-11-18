@@ -75,6 +75,12 @@ def test_staffing_excludes_over_utilized():
     assert "C-102" not in {m["consultant_id"] for m in res["matches"]}  # 95% utilized
 
 
+def test_staffing_shifts_stale_dates_forward():
+    res = t.find_available_consultants(["ai_security"], "EMEA", "2024-01-01", 80)
+    assert res["effective_start_date"] > "2024-01-01"
+    assert res["matches"], "stale LLM-guessed dates must not empty the bench"
+
+
 def test_record_dragon_verdict_requires_conditions(tool_context):
     res = t.record_dragon_verdict("pricing_dragon", "IN_WITH_CONDITIONS", 0.8, "Margin ok but discount needs VP approval.", [], tool_context=tool_context)
     assert res["error_code"] == "MISSING_CONDITIONS"

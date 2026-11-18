@@ -359,6 +359,9 @@ def find_available_consultants(
          "max_utilization_pct": max_utilization_pct}
     )
     start = dt.date.fromisoformat(req.start_date)
+    today = dt.date.today()
+    if start < today:  # LLMs often guess stale dates; never staff in the past
+        start = today + dt.timedelta(days=14)
     pool = [c for c in catalog.consultants() if c["region"] in {req.region, "EMEA" if req.region == "MENAT" else req.region}]
     matches: list[ConsultantMatch] = []
     for c in pool:
@@ -373,7 +376,13 @@ def find_available_consultants(
         ))
     matches.sort(key=lambda m: (-len(m.matched_skills), m.utilization_pct))
     covered = {s for m in matches for s in m.matched_skills}
-    return StaffingResult(matches=matches, uncovered_skills=sorted(set(req.required_skills) - covered)).model_dump(mode="json")
+    result = StaffingResult(matches=matches, uncovered_skills=sorted(set(req.required_skills) - covered)).model_dump(mode="json")
+    result["effective_start_date"] = start.isoformat()
+    result["guidance"] = (
+        "This is the complete bench search for these skills: do NOT call this tool again with the same skills. "
+        "Use these matches (or the uncovered_skills gap) in your verdict now."
+    )
+    return result
 
 
 # ---------------------------------------------------------------------------

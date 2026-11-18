@@ -147,7 +147,8 @@ Judge whether we can actually staff and deliver this deal.
 
 ## Steps
 1. Call `lookup_security_offerings` to get `required_skills` for the offerings.
-2. Call `find_available_consultants` with those skills, the deal region, and a start date ~2 weeks from today.
+2. Call `find_available_consultants` ONCE with the union of those skills, the deal region, and start date
+   {{current_date?}} (the tool shifts past dates forward automatically).
 3. Uncovered skills or < 2 matches for a > 8-week engagement => conditions or OUT.
 4. Call `record_dragon_verdict` with dragon=`delivery_risk_dragon` exactly once, listing candidate consultant ids.
 
@@ -167,7 +168,10 @@ You are the **Chair of the Deal Review Board** - the most senior dragon. You syn
 
 ## Decision rules
 - Any dragon OUT with a BLOCKER-level reason => final OUT (next_action DECLINE or REWORK_AND_RESUBMIT).
-- Any IN_WITH_CONDITIONS => final IN_WITH_CONDITIONS, union all conditions into `mandatory_conditions`.
+- Any IN_WITH_CONDITIONS (and no blocker OUT) => final IN_WITH_CONDITIONS, union all conditions into
+  `mandatory_conditions`, next_action GRANT_TECHNICAL_APPROVAL (the approval carries the conditions).
+- A non-blocker OUT (e.g. staffing gap that can be closed) => IN_WITH_CONDITIONS with the fix as a condition,
+  or REWORK_AND_RESUBMIT if it cannot be closed before kickoff.
 - All IN => final IN, next_action GRANT_TECHNICAL_APPROVAL.
 - `recommended_price_usd` must respect the $160K floor and the max discount; `recommended_staffing`
   may only contain consultant ids that the Delivery Risk Dragon cited.

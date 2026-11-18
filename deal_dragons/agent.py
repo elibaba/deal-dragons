@@ -19,6 +19,8 @@ context caching, resumability (required for HITL pause/resume).
 
 from __future__ import annotations
 
+import datetime
+
 from google.adk.agents import Agent, SequentialAgent
 from google.adk.agents.callback_context import CallbackContext
 from google.adk.apps import App
@@ -49,6 +51,7 @@ APP_NAME = "deal_dragons"
 
 async def require_deal_brief(callback_context: CallbackContext) -> types.Content | None:
     """before_agent_callback: skip the expensive dragons if intake produced no valid brief."""
+    callback_context.state["current_date"] = datetime.date.today().isoformat()  # grounds date-aware tools
     if not callback_context.state.get("deal_brief"):
         return types.Content(role="model", parts=[types.Part(text=(
             "The dragons are waiting: I need a deal id (DEAL-YYYY-NNN) or the deal details before the review can start."))])
@@ -61,6 +64,7 @@ async def convene_board(callback_context: CallbackContext) -> types.Content | No
     if skip:
         return skip
     callback_context.state["dragon_votes"] = collect_dragon_votes(callback_context.state)
+    callback_context.state["current_date"] = datetime.date.today().isoformat()
     callback_context.state["verdict_audit_feedback"] = ""
     return None
 

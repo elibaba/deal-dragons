@@ -45,6 +45,12 @@ variable "invoker_members" {
   default     = []
 }
 
+variable "enable_github_wif" {
+  description = "Create a GitHub Actions Workload Identity Federation provider (keyless CD). Some orgs restrict external OIDC issuers via constraints/iam.workloadIdentityPoolProviders."
+  type        = bool
+  default     = true
+}
+
 variable "enable_model_armor" {
   description = "Provision a Model Armor template and wire it into the agent."
   type        = bool

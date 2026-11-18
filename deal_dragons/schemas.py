@@ -183,7 +183,7 @@ class ConsultantMatch(StrictModel):
     available_from: str
 
 
-class StaffingResult(StrictModel):
+class StaffingResult(BaseModel):
     status: Literal["success"] = "success"
     matches: list[ConsultantMatch]
     uncovered_skills: list[str]
@@ -203,11 +203,20 @@ class DragonVerdict(StrictModel):
 # ---------------------------------------------------------------------------
 # Board verdict (Chair output_schema)
 # ---------------------------------------------------------------------------
+class DragonVotes(StrictModel):
+    """Explicit per-dragon fields (Gemini response schemas cannot express open-ended dict keys)."""
+
+    scope_dragon: Decision
+    pricing_dragon: Decision
+    swimlane_dragon: Decision
+    delivery_risk_dragon: Decision
+
+
 class BoardVerdict(StrictModel):
     deal_id: str = Field(pattern=DEAL_ID_PATTERN)
     final_decision: Decision
     headline: str = Field(max_length=200, description="One-line Dragons' Den style verdict")
-    dragon_votes: dict[str, Decision]
+    dragon_votes: DragonVotes
     mandatory_conditions: list[str] = Field(default_factory=list)
     recommended_price_usd: float = Field(ge=0)
     recommended_staffing: list[str] = Field(default_factory=list, description="consultant_ids")

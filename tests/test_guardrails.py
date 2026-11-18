@@ -51,6 +51,12 @@ def test_user_message_pii_is_redacted():
     assert "[REDACTED:EMAIL_ADDRESS]" in out.parts[0].text
 
 
+def test_structured_json_output_is_never_rewritten():
+    plugin = DealGuardrailPlugin()
+    resp = LlmResponse(content=types.Content(role="model", parts=[types.Part(text='{"headline": "Google will certify ISO 27001 compliance"}')]))
+    assert asyncio.run(plugin.after_model_callback(callback_context=SimpleNamespace(agent_name="x"), llm_response=resp)) is None
+
+
 def test_output_compliance_promise_gets_disclaimer():
     plugin = DealGuardrailPlugin()
     resp = LlmResponse(content=types.Content(role="model", parts=[types.Part(text="Good news: Google will certify your ISO 27001 compliance.")]))

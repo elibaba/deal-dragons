@@ -29,7 +29,11 @@ resource "google_cloud_run_v2_service" "agent" {
         value = var.project_id
       }
       env {
-        name  = "GOOGLE_CLOUD_LOCATION"
+        name  = "GOOGLE_CLOUD_LOCATION" # Gemini 3.x is served from the global endpoint
+        value = "global"
+      }
+      env {
+        name  = "GOOGLE_CLOUD_REGION" # Agent Engine + Model Armor region
         value = var.region
       }
       env {

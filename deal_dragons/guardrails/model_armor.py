@@ -30,7 +30,7 @@ def _client():  # pragma: no cover - requires GCP
     from google.cloud import modelarmor_v1
 
     return modelarmor_v1.ModelArmorClient(
-        client_options=ClientOptions(api_endpoint=f"modelarmor.{settings.location}.rep.googleapis.com")
+        client_options=ClientOptions(api_endpoint=f"modelarmor.{settings.region}.rep.googleapis.com")
     )
 
 

@@ -1,5 +1,6 @@
 # Keyless CI/CD: GitHub Actions authenticates with Workload Identity Federation.
 resource "google_iam_workload_identity_pool" "github" {
+  count                     = var.enable_github_wif ? 1 : 0
   project                   = var.project_id
   workload_identity_pool_id = "${var.service_name}-gh"
   display_name              = "Deal Dragons GitHub"
@@ -7,8 +8,9 @@ resource "google_iam_workload_identity_pool" "github" {
 }
 
 resource "google_iam_workload_identity_pool_provider" "github" {
+  count                              = var.enable_github_wif ? 1 : 0
   project                            = var.project_id
-  workload_identity_pool_id          = google_iam_workload_identity_pool.github.workload_identity_pool_id
+  workload_identity_pool_id          = google_iam_workload_identity_pool.github[0].workload_identity_pool_id
   workload_identity_pool_provider_id = "github-oidc"
   attribute_mapping = {
     "google.subject"       = "assertion.sub"
@@ -27,9 +29,10 @@ resource "google_service_account" "deployer" {
 }
 
 resource "google_service_account_iam_member" "deployer_wif" {
+  count              = var.enable_github_wif ? 1 : 0
   service_account_id = google_service_account.deployer.name
   role               = "roles/iam.workloadIdentityUser"
-  member             = "principalSet://iam.googleapis.com/${google_iam_workload_identity_pool.github.name}/attribute.repository/${var.github_repository}"
+  member             = "principalSet://iam.googleapis.com/${google_iam_workload_identity_pool.github[0].name}/attribute.repository/${var.github_repository}"
 }
 
 resource "google_project_iam_member" "deployer" {

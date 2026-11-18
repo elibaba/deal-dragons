@@ -19,7 +19,7 @@ resource "google_secret_manager_secret" "gemini_api_key" {
 }
 
 resource "google_secret_manager_secret_iam_member" "runtime_access" {
-  for_each  = {
+  for_each = {
     crm    = google_secret_manager_secret.crm_token.id
     gemini = google_secret_manager_secret.gemini_api_key.id
   }
